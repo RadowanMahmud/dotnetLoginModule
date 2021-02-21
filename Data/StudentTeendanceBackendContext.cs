@@ -14,6 +14,12 @@ namespace StudentTeendanceBackend.Data
         {
         }
 
-        public DbSet<Movie> Movie { get; set; }
+        public DbSet<Student> Student { get; set; }
+
+        public DbSet<StudentTeendanceBackend.Model.Admin> Admin { get; set; }
+
+        public DbSet<StudentTeendanceBackend.Model.Attendance> Attendance { get; set; }
+
+        public DbSet<StudentTeendanceBackend.Model.Record> Record { get; set; }
     }
 }

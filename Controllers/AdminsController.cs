@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,53 +10,50 @@ using StudentTeendanceBackend.Model;
 
 namespace StudentTeendanceBackend.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class MoviesController : ControllerBase
+    public class AdminsController : ControllerBase
     {
         private readonly StudentTeendanceBackendContext _context;
-        private readonly IJwtAuthManager jwtAuthManager;
 
-        public MoviesController(StudentTeendanceBackendContext context, IJwtAuthManager jwtAuth)
+        public AdminsController(StudentTeendanceBackendContext context)
         {
             _context = context;
-            jwtAuthManager = jwtAuth;
         }
 
-        // GET: api/Movies
+        // GET: api/Admins
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovie()
+        public async Task<ActionResult<IEnumerable<Admin>>> GetAdmin()
         {
-            return await _context.Movie.ToListAsync();
+            return await _context.Admin.ToListAsync();
         }
 
-        // GET: api/Movies/5
+        // GET: api/Admins/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Movie>> GetMovie(int id)
+        public async Task<ActionResult<Admin>> GetAdmin(int id)
         {
-            var movie = await _context.Movie.FindAsync(id);
+            var admin = await _context.Admin.FindAsync(id);
 
-            if (movie == null)
+            if (admin == null)
             {
                 return NotFound();
             }
 
-            return movie;
+            return admin;
         }
 
-        // PUT: api/Movies/5
+        // PUT: api/Admins/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMovie(int id, Movie movie)
+        public async Task<IActionResult> PutAdmin(int id, Admin admin)
         {
-            if (id != movie.Id)
+            if (id != admin.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(movie).State = EntityState.Modified;
+            _context.Entry(admin).State = EntityState.Modified;
 
             try
             {
@@ -65,7 +61,7 @@ namespace StudentTeendanceBackend.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MovieExists(id))
+                if (!AdminExists(id))
                 {
                     return NotFound();
                 }
@@ -78,37 +74,37 @@ namespace StudentTeendanceBackend.Controllers
             return NoContent();
         }
 
-        // POST: api/Movies
+        // POST: api/Admins
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Movie>> PostMovie(Movie movie)
+        public async Task<ActionResult<Admin>> PostAdmin(Admin admin)
         {
-            _context.Movie.Add(movie);
+            _context.Admin.Add(admin);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
+            return CreatedAtAction("GetAdmin", new { id = admin.Id }, admin);
         }
 
-        // DELETE: api/Movies/5
+        // DELETE: api/Admins/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Movie>> DeleteMovie(int id)
+        public async Task<ActionResult<Admin>> DeleteAdmin(int id)
         {
-            var movie = await _context.Movie.FindAsync(id);
-            if (movie == null)
+            var admin = await _context.Admin.FindAsync(id);
+            if (admin == null)
             {
                 return NotFound();
             }
 
-            _context.Movie.Remove(movie);
+            _context.Admin.Remove(admin);
             await _context.SaveChangesAsync();
 
-            return movie;
+            return admin;
         }
 
-        private bool MovieExists(int id)
+        private bool AdminExists(int id)
         {
-            return _context.Movie.Any(e => e.Id == id);
+            return _context.Admin.Any(e => e.Id == id);
         }
     }
 }
