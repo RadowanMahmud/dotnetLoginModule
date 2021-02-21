@@ -79,13 +79,14 @@ namespace StudentTeendanceBackend.Controllers
         // POST: api/Admins
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<Admin>> PostAdmin(Admin admin)
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public IActionResult PostAdmin(Admin admin)
         {
             _context.Admin.Add(admin);
-            await _context.SaveChangesAsync();
+            var result = _context.SaveChanges();
 
-            return CreatedAtAction("GetAdmin", new { id = admin.Id }, admin);
+            return Ok(result);
         }
 
         // DELETE: api/Admins/5
