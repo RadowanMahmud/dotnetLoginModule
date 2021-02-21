@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
+using StudentTeendanceBackend.Data;
 
 namespace StudentTeendanceBackend
 {
@@ -48,6 +50,9 @@ namespace StudentTeendanceBackend
             });
 
             services.AddSingleton<IJwtAuthManager>(new JwtAuth(key));
+
+            services.AddDbContext<StudentTeendanceBackendContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("StudentTeendanceBackendContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +72,7 @@ namespace StudentTeendanceBackend
             {
                 endpoints.MapControllers();
             });
+           
         }
     }
 }
